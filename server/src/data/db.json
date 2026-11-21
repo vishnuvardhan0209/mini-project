@@ -1,0 +1,531 @@
+{
+  "users": [
+    {
+      "id": "user-alex-kumar",
+      "name": "Alex Kumar",
+      "email": "alex.kumar@example.com",
+      "password": "password123",
+      "college": "National Institute of Technology",
+      "degree": "B.Tech in Computer Science & Engineering",
+      "targetRole": "Java Backend Developer",
+      "skills": [
+        "Java",
+        "Spring Boot",
+        "SQL",
+        "Git",
+        "DSA",
+        "REST APIs",
+        "PostgreSQL",
+        "Docker (Basics)"
+      ],
+      "createdAt": "2026-08-15T10:00:00.000Z"
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc-cn-notes",
+      "userId": "user-alex-kumar",
+      "title": "Computer Networks Comprehensive Notes",
+      "subject": "Computer Networks",
+      "chapter": "Data Link & Transport Layer",
+      "topic": "OSI Model, Ethernet, Error Detection, Sliding Window",
+      "content": "Computer Networks Notes:\n1. OSI Reference Model: 7 Layers - Physical, Data Link, Network, Transport, Session, Presentation, Application. Data Link layer handles framing, physical addressing, error and flow control.\n2. Ethernet: Uses CSMA/CD (Carrier Sense Multiple Access with Collision Detection). Frame structure includes Preamble (7 bytes), SFD (1 byte), Destination MAC (6 bytes), Source MAC (6 bytes), EtherType (2 bytes), Payload (46-1500 bytes), and CRC FCS (4 bytes). Minimum frame size is 64 bytes.\n3. Error Detection: Parity check, Checksum, and Cyclic Redundancy Check (CRC). CRC uses polynomial division with generator polynomial G(x).\n4. Sliding Window Protocols: Stop-and-Wait, Go-Back-N (window size N, sender retransmits all unacknowledged frames), Selective Repeat (window size 2^(m-1), sender retransmits only corrupted/lost frames).",
+      "fileType": "PDF",
+      "uploadedAt": "2026-09-18T14:30:00.000Z"
+    },
+    {
+      "id": "doc-java-notes",
+      "userId": "user-alex-kumar",
+      "title": "Core Java & Spring Boot Fundamentals",
+      "subject": "Java",
+      "chapter": "OOP & Concurrency",
+      "topic": "Collections Framework, Multithreading, JVM Memory",
+      "content": "Java Core Concepts:\n1. OOP: Encapsulation, Inheritance, Polymorphism (Method Overloading vs Overriding), Abstraction (Interfaces vs Abstract Classes).\n2. Collections: List (ArrayList vs LinkedList), Set (HashSet, TreeSet), Map (HashMap internal working with bucket arrays, hash code collision resolution with tree bins since Java 8), ConcurrentHashMap.\n3. JVM Architecture: ClassLoader, JVM Memory (Heap, Stack, Metaspace, PC Registers), Garbage Collection (G1GC, ZGC).\n4. Multithreading: Thread lifecycle, synchronized keyword, volatile memory visibility, ReentrantLock, ExecutorService and Thread Pools.",
+      "fileType": "DOCX",
+      "uploadedAt": "2026-09-19T11:15:00.000Z"
+    },
+    {
+      "id": "doc-dbms-notes",
+      "userId": "user-alex-kumar",
+      "title": "DBMS & SQL Query Optimization",
+      "subject": "DBMS",
+      "chapter": "Transactions & Indexing",
+      "topic": "ACID Properties, Normalization, B+ Trees",
+      "content": "Database Management Systems:\n1. ACID: Atomicity, Consistency, Isolation (Read Uncommitted, Read Committed, Repeatable Read, Serializable), Durability.\n2. Normalization: 1NF (atomic values), 2NF (no partial dependency), 3NF (no transitive dependency), BCNF.\n3. Indexing: Clustered vs Non-Clustered Indexes, B-Tree and B+ Tree structures. Range queries perform best on B+ Tree leaf node linked lists.",
+      "fileType": "TXT",
+      "uploadedAt": "2026-09-20T09:00:00.000Z"
+    }
+  ],
+  "tests": [
+    {
+      "id": "test-cn-01",
+      "userId": "user-alex-kumar",
+      "title": "Computer Networks: Protocols & Layers",
+      "subject": "Computer Networks",
+      "score": 78,
+      "totalQuestions": 20,
+      "correctAnswers": 15,
+      "wrongAnswers": 4,
+      "unanswered": 1,
+      "timeTaken": "14m 20s",
+      "accuracy": 78.9,
+      "topicBreakdown": [
+        {
+          "topic": "OSI Model",
+          "total": 5,
+          "correct": 5,
+          "percentage": 100,
+          "priority": "strong",
+          "recommendation": "Outstanding mastery. Continue practicing advanced application-based scenarios."
+        },
+        {
+          "topic": "Sliding Window",
+          "total": 5,
+          "correct": 4,
+          "percentage": 80,
+          "priority": "strong",
+          "recommendation": "Solid grasp of window size calculation and buffer dynamics."
+        },
+        {
+          "topic": "Error Detection",
+          "total": 5,
+          "correct": 3,
+          "percentage": 60,
+          "priority": "medium",
+          "recommendation": "Practice checksum and polynomial generator CRC problems."
+        },
+        {
+          "topic": "Ethernet",
+          "total": 5,
+          "correct": 2,
+          "percentage": 40,
+          "priority": "high",
+          "recommendation": "Revise Ethernet frame structure, minimum frame size formula, CSMA/CD, and exponential backoff."
+        }
+      ],
+      "answers": [
+        {
+          "id": "ans-1",
+          "testId": "test-cn-01",
+          "questionId": "q-cn-1",
+          "questionText": "Which layer of the OSI model is directly responsible for end-to-end flow control and reliable transmission?",
+          "options": {
+            "A": "Network Layer",
+            "B": "Data Link Layer",
+            "C": "Transport Layer",
+            "D": "Session Layer"
+          },
+          "selectedAnswer": "C",
+          "correctAnswer": "C",
+          "isCorrect": true,
+          "topic": "OSI Model",
+          "difficulty": "easy",
+          "explanation": "The Transport Layer (Layer 4) is responsible for host-to-host or end-to-end communication, segmentation, flow control, and error recovery."
+        },
+        {
+          "id": "ans-2",
+          "testId": "test-cn-01",
+          "questionId": "q-cn-2",
+          "questionText": "What is the minimum Ethernet frame size required for proper collision detection using CSMA/CD on standard 10 Mbps Ethernet?",
+          "options": {
+            "A": "46 bytes",
+            "B": "64 bytes",
+            "C": "128 bytes",
+            "D": "1518 bytes"
+          },
+          "selectedAnswer": "A",
+          "correctAnswer": "B",
+          "isCorrect": false,
+          "topic": "Ethernet",
+          "difficulty": "medium",
+          "explanation": "The minimum Ethernet frame size is 64 bytes (512 bits), which corresponds to the slot time needed for collision detection over the maximum allowed network diameter."
+        },
+        {
+          "id": "ans-3",
+          "testId": "test-cn-01",
+          "questionId": "q-cn-3",
+          "questionText": "In a Selective Repeat ARQ protocol with an m-bit sequence number, what is the maximum sender window size?",
+          "options": {
+            "A": "2^m",
+            "B": "2^m - 1",
+            "C": "2^(m-1)",
+            "D": "m/2"
+          },
+          "selectedAnswer": "C",
+          "correctAnswer": "C",
+          "isCorrect": true,
+          "topic": "Sliding Window",
+          "difficulty": "hard",
+          "explanation": "Sliding Window Selective Repeat requires the sender and receiver window sizes to be at most 2^(m-1) to avoid sequence number overlap and ambiguity."
+        },
+        {
+          "id": "ans-4",
+          "testId": "test-cn-01",
+          "questionId": "q-cn-4",
+          "questionText": "If the CRC generator polynomial is G(x) = x^4 + x + 1, how many check bits (redundancy bits) are appended to the data?",
+          "options": {
+            "A": "3 bits",
+            "B": "4 bits",
+            "C": "5 bits",
+            "D": "1 bit"
+          },
+          "selectedAnswer": "B",
+          "correctAnswer": "B",
+          "isCorrect": true,
+          "topic": "Error Detection",
+          "difficulty": "medium",
+          "explanation": "The degree of the generator polynomial determines the number of CRC bits. The degree of x^4 + x + 1 is 4, so 4 zero bits are initially appended."
+        },
+        {
+          "id": "ans-5",
+          "testId": "test-cn-01",
+          "questionId": "q-cn-5",
+          "questionText": "Under Ethernet CSMA/CD, after 3 consecutive collisions, what is the maximum possible backoff delay value chosen uniformly from {0, 1, ..., 2^k - 1}?",
+          "options": {
+            "A": "3 slot times",
+            "B": "7 slot times",
+            "C": "8 slot times",
+            "D": "15 slot times"
+          },
+          "selectedAnswer": "D",
+          "correctAnswer": "B",
+          "isCorrect": false,
+          "topic": "Ethernet",
+          "difficulty": "hard",
+          "explanation": "For k = 3 collisions, the binary exponential backoff algorithm picks a random delay from 0 to 2^3 - 1, which equals 0 to 7 slot times."
+        }
+      ],
+      "createdAt": "2026-09-21T16:45:00.000Z"
+    },
+    {
+      "id": "test-java-02",
+      "userId": "user-alex-kumar",
+      "title": "Java Collections & Multithreading",
+      "subject": "Java",
+      "score": 85,
+      "totalQuestions": 15,
+      "correctAnswers": 13,
+      "wrongAnswers": 2,
+      "unanswered": 0,
+      "timeTaken": "11m 15s",
+      "accuracy": 86.6,
+      "topicBreakdown": [
+        {
+          "topic": "Collections",
+          "total": 5,
+          "correct": 5,
+          "percentage": 100,
+          "priority": "strong",
+          "recommendation": "Great understanding of HashMap, HashSet, and Concurrent collections."
+        },
+        {
+          "topic": "Multithreading",
+          "total": 5,
+          "correct": 4,
+          "percentage": 80,
+          "priority": "strong",
+          "recommendation": "Good grasp of synchronizers, volatile, and ThreadPoolExecutors."
+        },
+        {
+          "topic": "JVM Memory",
+          "total": 5,
+          "correct": 3,
+          "percentage": 60,
+          "priority": "medium",
+          "recommendation": "Deepen knowledge on Garbage Collection algorithms and Metaspace tuning."
+        }
+      ],
+      "answers": [],
+      "createdAt": "2026-09-20T14:10:00.000Z"
+    },
+    {
+      "id": "test-dbms-03",
+      "userId": "user-alex-kumar",
+      "title": "DBMS Indexing & Normalization",
+      "subject": "DBMS",
+      "score": 68,
+      "totalQuestions": 15,
+      "correctAnswers": 10,
+      "wrongAnswers": 5,
+      "unanswered": 0,
+      "timeTaken": "13m 40s",
+      "accuracy": 66.7,
+      "topicBreakdown": [
+        {
+          "topic": "ACID Properties",
+          "total": 5,
+          "correct": 4,
+          "percentage": 80,
+          "priority": "strong",
+          "recommendation": "Well prepared for transaction isolation levels."
+        },
+        {
+          "topic": "Normalization",
+          "total": 5,
+          "correct": 3,
+          "percentage": 60,
+          "priority": "medium",
+          "recommendation": "Review BCNF and lossy vs lossless join decomposition."
+        },
+        {
+          "topic": "B+ Tree Indexing",
+          "total": 5,
+          "correct": 2,
+          "percentage": 40,
+          "priority": "high",
+          "recommendation": "Study clustered vs secondary index leaf structures."
+        }
+      ],
+      "answers": [],
+      "createdAt": "2026-09-17T11:20:00.000Z"
+    }
+  ],
+  "resumeAnalyses": [
+    {
+      "id": "resume-alex-01",
+      "userId": "user-alex-kumar",
+      "resumeName": "Alex_Kumar_Software_Engineer_Resume.pdf",
+      "overallScore": 8.2,
+      "scores": {
+        "skills": 8.5,
+        "projects": 9,
+        "education": 8,
+        "experience": 6,
+        "formatting": 8.5,
+        "atsCompatibility": 7.5,
+        "keywords": 7
+      },
+      "strengths": [
+        "Strong core technical stack with Java, Spring Boot, PostgreSQL, and REST APIs",
+        "Impressive project: Scalable E-Commerce Microservices platform handling 5,000 requests/min",
+        "Clean, professional two-column layout with easily readable typography",
+        "Consistent GitHub links and live demo URLs included"
+      ],
+      "areasToImprove": [
+        "Add measurable metrics and quantifiable business outcomes to all bullet points",
+        "Improve ATS keyword density for cloud tooling (Docker, AWS ECS/S3, Kubernetes)",
+        "Include unit testing and CI/CD tools (JUnit 5, Mockito, GitHub Actions)",
+        "Condense high school education details to make room for achievements"
+      ],
+      "sectionSuggestions": [
+        {
+          "section": "Professional Summary",
+          "currentFeedback": "Brief summary states 'Aspiring software engineer passionate about backend development'.",
+          "improvementTip": "Make it role-focused and keyword rich. Highlight top frameworks and problem-solving focus.",
+          "exampleSnippet": "'Results-driven Java Backend Developer with solid expertise in Spring Boot, RESTful microservices, and SQL optimization. Proven track record building high-throughput systems.'"
+        },
+        {
+          "section": "Projects",
+          "currentFeedback": "Good descriptions but lacks business impact percentages.",
+          "improvementTip": "Use the Google XYZ formula: Accomplished [X], as measured by [Y], by doing [Z].",
+          "exampleSnippet": "'Architected an event-driven inventory service using Spring Boot & Redis, reducing database latency by 42% under high concurrent load.'"
+        },
+        {
+          "section": "Skills & Certifications",
+          "currentFeedback": "Missing automated testing and modern deployment skills.",
+          "improvementTip": "Add testing frameworks (JUnit, Mockito) and DevOps/Cloud competencies."
+        }
+      ],
+      "extractedSkills": [
+        "Java",
+        "Spring Boot",
+        "SQL",
+        "PostgreSQL",
+        "Git",
+        "REST APIs",
+        "Data Structures",
+        "Algorithms",
+        "Redis",
+        "HTML/CSS"
+      ],
+      "createdAt": "2026-09-21T18:00:00.000Z"
+    }
+  ],
+  "jobMatches": [
+    {
+      "id": "job-match-01",
+      "userId": "user-alex-kumar",
+      "jobTitle": "Java Backend Developer",
+      "company": "FinTech Global Inc.",
+      "jobDescription": "We are seeking a proactive Java Backend Developer to build mission-critical payment gateways and financial ledger microservices. The candidate must have solid hands-on experience in Java 17+, Spring Boot, PostgreSQL, Docker, REST APIs, and AWS cloud deployment. Familiarity with Kafka is a plus.",
+      "matchScore": 8.4,
+      "keywordMatchPercentage": 82,
+      "matchedSkills": [
+        "Java",
+        "Spring Boot",
+        "SQL",
+        "PostgreSQL",
+        "REST APIs",
+        "Git"
+      ],
+      "missingSkills": [
+        "Docker",
+        "AWS",
+        "Kafka",
+        "CI/CD"
+      ],
+      "recommendations": "Add Spring Boot REST API architectural details, Docker containerization, and AWS deployment experience to your resume if you genuinely have these skills.",
+      "resumeChanges": [
+        "Add a bullet point under E-Commerce Microservices detailing Docker containerization and environment isolation.",
+        "Highlight experience with REST API design, HTTP status codes, and Swagger/OpenAPI documentation.",
+        "Mention any basic exposure to AWS (e.g. S3, EC2 deployment or local testing)."
+      ],
+      "createdAt": "2026-09-21T19:30:00.000Z"
+    },
+    {
+      "id": "job-match-02",
+      "userId": "user-alex-kumar",
+      "jobTitle": "Associate Software Engineer",
+      "company": "TechCorp Systems",
+      "jobDescription": "Looking for entry-level Software Engineers with strong foundation in Object Oriented Programming, Data Structures, Algorithms, relational databases, and good communication skills.",
+      "matchScore": 9.1,
+      "keywordMatchPercentage": 93,
+      "matchedSkills": [
+        "Java",
+        "OOP",
+        "DSA",
+        "SQL",
+        "Git",
+        "Database Management"
+      ],
+      "missingSkills": [
+        "Agile / Scrum",
+        "Unit Testing"
+      ],
+      "recommendations": "Highlight your DSA problem-solving count (e.g. 350+ LeetCode problems) and any collaborative agile team projects.",
+      "resumeChanges": [
+        "Mention unit testing libraries (JUnit 5) in the Technical Skills section.",
+        "List competitive programming achievements or academic coursework in Algorithms."
+      ],
+      "createdAt": "2026-09-19T16:20:00.000Z"
+    }
+  ],
+  "chatHistory": [
+    {
+      "id": "msg-1",
+      "userId": "user-alex-kumar",
+      "conversationId": "conv-default",
+      "role": "user",
+      "content": "Give me a practical Java backend developer interview preparation roadmap.",
+      "timestamp": "2026-09-21T11:00:00.000Z"
+    },
+    {
+      "id": "msg-2",
+      "userId": "user-alex-kumar",
+      "conversationId": "conv-default",
+      "role": "assistant",
+      "content": "### 🚀 Java Backend Developer Interview Roadmap\n\nHere is a structured 4-week roadmap to ace your technical interviews:\n\n#### Week 1: Core Java & JVM Internals\n- **OOP Principles**: Deep dive into Polymorphism, Abstract classes vs Interfaces (default/static methods in Java 8+).\n- **Collections Framework**: Internal mechanics of `HashMap` (rehashing, bucketing, Java 8 tree bins), `ConcurrentHashMap`, `ArrayList` vs `LinkedList`.\n- **Multithreading**: `volatile`, `synchronized`, `ReentrantLock`, `CompletableFuture`, and `ExecutorService` thread pools.\n- **JVM**: Heap, Stack, Metaspace, and Garbage Collection (G1GC).\n\n#### Week 2: Spring Boot & Microservices\n- **Core Spring**: Dependency Injection, Inversion of Control (IoC), Beans scope & lifecycle.\n- **Spring Boot**: Auto-configuration, Actuator, `@ControllerAdvice` for global exception handling.\n- **REST Design**: Proper HTTP status codes, idempotency of GET/PUT/DELETE, and JWT authentication.\n\n#### Week 3: Database & Caching\n- **SQL & ORM**: Joins, indexing (Clustered vs Non-clustered, B+ Tree), transaction isolation levels (ACID), and Spring Data JPA N+1 problem.\n- **Caching**: Redis cache-aside pattern and TTL policies.\n\n#### Week 4: DSA & Mock Interviews\n- Master Arrays, HashMaps, Two Pointers, Sliding Window, Trees, and Dynamic Programming.\n- Practice behavioral STAR method responses for HR rounds.",
+      "timestamp": "2026-09-21T11:00:05.000Z"
+    },
+    {
+      "id": "msg-787590f0",
+      "userId": "user-alex-kumar",
+      "conversationId": "conv-default",
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-09-22T13:55:29.899Z"
+    },
+    {
+      "id": "msg-802fb9e8",
+      "userId": "user-alex-kumar",
+      "conversationId": "conv-default",
+      "role": "assistant",
+      "content": "### 💡 Career Assistant Guidance\n\nThank you for your question! Here are key recommendations tailored for your preparation:\n\n1. **Master the Fundamentals**: Ensure you can explain core concepts (Data Structures, Object Oriented Programming, System Architecture, and Networking) from first principles.\n2. **Project Narrative**: When discussing your projects in interviews, use the **STAR method** (Situation, Task, Action, Result) and clearly state your individual technical contributions.\n3. **Mock Practice**: Use our **Interview Practice** simulator to test your spontaneous speaking skills and get structured feedback.\n\nWould you like a sample interview question, a resume review checklist, or specific technical tips on Java, Python, DBMS, or DSA?",
+      "timestamp": "2026-09-22T13:55:29.900Z"
+    },
+    {
+      "id": "msg-748a9707",
+      "userId": "user-alex-kumar",
+      "conversationId": "conv-default",
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-09-22T13:55:40.627Z"
+    },
+    {
+      "id": "msg-663e9b26",
+      "userId": "user-alex-kumar",
+      "conversationId": "conv-default",
+      "role": "assistant",
+      "content": "### 💡 Career Assistant Guidance\n\nThank you for your question! Here are key recommendations tailored for your preparation:\n\n1. **Master the Fundamentals**: Ensure you can explain core concepts (Data Structures, Object Oriented Programming, System Architecture, and Networking) from first principles.\n2. **Project Narrative**: When discussing your projects in interviews, use the **STAR method** (Situation, Task, Action, Result) and clearly state your individual technical contributions.\n3. **Mock Practice**: Use our **Interview Practice** simulator to test your spontaneous speaking skills and get structured feedback.\n\nWould you like a sample interview question, a resume review checklist, or specific technical tips on Java, Python, DBMS, or DSA?",
+      "timestamp": "2026-09-22T13:55:40.629Z"
+    }
+  ],
+  "interviewSessions": [
+    {
+      "id": "session-8fd73bc7",
+      "userId": "user-alex-kumar",
+      "role": "Java Developer",
+      "interviewType": "Technical",
+      "difficulty": "Intermediate",
+      "status": "in-progress",
+      "turns": [
+        {
+          "id": "turn-1",
+          "questionIndex": 1,
+          "question": "Can you explain the internal mechanism of Java HashMap, specifically how hash collisions are handled before and after Java 8?",
+          "timestamp": "2026-09-22T13:55:44.815Z",
+          "userAnswer": "kkk",
+          "feedback": "Your answer is quite brief. In interviews, aim to explain your reasoning, give concrete examples, and state any trade-offs.",
+          "score": 6
+        },
+        {
+          "id": "turn-2",
+          "questionIndex": 2,
+          "question": "What is the difference between synchronous and asynchronous processing? How would you implement an asynchronous task in Spring Boot?",
+          "timestamp": "2026-09-22T13:55:50.919Z"
+        }
+      ],
+      "createdAt": "2026-09-22T13:55:44.815Z"
+    },
+    {
+      "id": "session-java-01",
+      "userId": "user-alex-kumar",
+      "role": "Java Developer",
+      "interviewType": "Technical",
+      "difficulty": "Intermediate",
+      "status": "completed",
+      "turns": [
+        {
+          "id": "t-1",
+          "questionIndex": 1,
+          "question": "Can you explain how a HashMap works internally in Java, and what changes were introduced in Java 8 regarding collision handling?",
+          "userAnswer": "HashMap in Java uses an array of buckets. When we call put(key, value), it computes the hash code of the key, calculates the bucket index using bitwise operations, and stores a Node. If there is a collision, it forms a linked list. In Java 8, when the number of items in a bucket exceeds the threshold of 8 and the table capacity is at least 64, the linked list is converted to a red-black balanced tree (TreeNode), which reduces the search complexity from O(n) to O(log n).",
+          "feedback": "Excellent and accurate answer! You clearly explained hash calculation, bucketing, and the specific Java 8 threshold (TREEIFY_THRESHOLD = 8).",
+          "score": 9.5,
+          "timestamp": "2026-09-20T17:00:00.000Z"
+        },
+        {
+          "id": "t-2",
+          "questionIndex": 2,
+          "question": "What is the difference between fail-fast and fail-safe iterators in Java Collections? Can you give examples of each?",
+          "userAnswer": "Fail-fast iterators throw ConcurrentModificationException if the collection is modified while iterating over it, except through the iterator's own remove method. Examples are ArrayList and HashMap. Fail-safe iterators work on a clone or snapshot of the collection so they don't throw exception, such as ConcurrentHashMap and CopyOnWriteArrayList.",
+          "feedback": "Great response. You correctly identified modCount mechanism implications and provided precise collection examples.",
+          "score": 9,
+          "timestamp": "2026-09-20T17:05:00.000Z"
+        }
+      ],
+      "evaluation": {
+        "overallScore": 8.8,
+        "technicalKnowledge": 9.2,
+        "communication": 8.5,
+        "answerQuality": 8.7,
+        "summary": "Alex displayed strong conceptual clarity in Java Core, memory management, and concurrent data structures. Answers were crisp, well-structured, and demonstrated real production awareness.",
+        "strengths": [
+          "Precise explanation of HashMap internal hash buckets and Java 8 Red-Black Tree conversion",
+          "Accurate distinction between fail-fast vs fail-safe iterators and thread-safe collections",
+          "Professional and confident technical articulation"
+        ],
+        "missingConcepts": [
+          "Could mention memory overhead trade-off of TreeNodes over standard Node entries in HashMap",
+          "Could mention memory consistency considerations for CopyOnWriteArrayList write performance"
+        ],
+        "recommendedTopics": [
+          "Java 21 Virtual Threads & Project Loom",
+          "Garbage Collection tuning flags (G1GC vs ZGC)",
+          "Spring Boot Transaction propagation attributes"
+        ]
+      },
+      "createdAt": "2026-09-20T17:15:00.000Z"
+    }
+  ]
+}
