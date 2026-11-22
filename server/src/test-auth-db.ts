@@ -240,7 +240,7 @@ async function runTests() {
     const updatedDbUser = await prisma.user.findUnique({ where: { id: dbUser!.id } });
     assert(updatedDbUser?.targetRole === 'Senior Cloud Architect', 'Profile changes persisted in PostgreSQL');
     assert(updatedDbUser?.college === 'IIT Bombay', 'College persisted in PostgreSQL');
-    assert(updatedDbUser?.skills.includes('PostgreSQL'), 'Skills array persisted in PostgreSQL');
+    assert(!!updatedDbUser?.skills.includes('PostgreSQL'), 'Skills array persisted in PostgreSQL');
 
     // ----------------------------------------------------
     // Test 8: Protected Dashboard & API Access
