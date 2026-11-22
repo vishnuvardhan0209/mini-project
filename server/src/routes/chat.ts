@@ -15,7 +15,7 @@ router.get('/history', (req: Request, res: Response): void => {
 });
 
 // Send message
-router.post('/message', (req: Request, res: Response): void => {
+router.post('/message', async (req: Request, res: Response): Promise<void> => {
   try {
     const {
       message,
@@ -38,8 +38,8 @@ router.post('/message', (req: Request, res: Response): void => {
     };
     addChatMessage(userMsg);
 
-    // AI Career Advisor generates contextual response
-    const aiResponseText = AIService.answerCareerQuestion(message);
+    // AI Career Advisor generates contextual response (via Ollama or fallback)
+    const aiResponseText = await AIService.answerCareerQuestion(message);
 
     const botMsg: ChatMessage = {
       id: `msg-${uuidv4().substring(0, 8)}`,

@@ -565,9 +565,47 @@ export class AIService {
         };
     }
     /**
+     * Direct Ollama Agent Inference Helper
+     */
+    static async queryOllama(prompt, systemPrompt) {
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 12000);
+            const res = await fetch('http://localhost:11434/api/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    model: 'llama3.2',
+                    prompt,
+                    system: systemPrompt || 'You are an intelligent AI Career Mentor and Interview Coach. Provide clear, encouraging, structured, practical technical guidance for college engineering students.',
+                    stream: false
+                }),
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
+            if (!res.ok)
+                return null;
+            const data = await res.json();
+            return data.response ? data.response.trim() : null;
+        }
+        catch {
+            return null;
+        }
+    }
+    /**
      * AI Career Chat Assistant
      */
-    static answerCareerQuestion(userMessage) {
+    static async answerCareerQuestion(userMessage) {
+        // 1. Attempt dynamic inference via active local Ollama Agent (llama3.2)
+        try {
+            const ollamaResponse = await this.queryOllama(userMessage);
+            if (ollamaResponse && ollamaResponse.length > 20) {
+                return ollamaResponse;
+            }
+        }
+        catch {
+            // Fallback to domain repository
+        }
         const q = userMessage.toLowerCase();
         if (q.includes('roadmap') || q.includes('java interview roadmap') || q.includes('backend roadmap')) {
             return `### 🚀 Java Backend Interview Roadmap

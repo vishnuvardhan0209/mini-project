@@ -448,6 +448,22 @@
       "role": "assistant",
       "content": "### 💡 Career Assistant Guidance\n\nThank you for your question! Here are key recommendations tailored for your preparation:\n\n1. **Master the Fundamentals**: Ensure you can explain core concepts (Data Structures, Object Oriented Programming, System Architecture, and Networking) from first principles.\n2. **Project Narrative**: When discussing your projects in interviews, use the **STAR method** (Situation, Task, Action, Result) and clearly state your individual technical contributions.\n3. **Mock Practice**: Use our **Interview Practice** simulator to test your spontaneous speaking skills and get structured feedback.\n\nWould you like a sample interview question, a resume review checklist, or specific technical tips on Java, Python, DBMS, or DSA?",
       "timestamp": "2026-09-22T13:55:40.629Z"
+    },
+    {
+      "id": "msg-7daf8816",
+      "userId": "29a494eb-9f35-4367-be50-bb98f892cfe2",
+      "conversationId": "conv-default",
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-11-22T16:59:11.367Z"
+    },
+    {
+      "id": "msg-fca806d4",
+      "userId": "29a494eb-9f35-4367-be50-bb98f892cfe2",
+      "conversationId": "conv-default",
+      "role": "assistant",
+      "content": "### 💡 Career Assistant Guidance\n\nThank you for your question! Here are key recommendations tailored for your preparation:\n\n1. **Master the Fundamentals**: Ensure you can explain core concepts (Data Structures, Object Oriented Programming, System Architecture, and Networking) from first principles.\n2. **Project Narrative**: When discussing your projects in interviews, use the **STAR method** (Situation, Task, Action, Result) and clearly state your individual technical contributions.\n3. **Mock Practice**: Use our **Interview Practice** simulator to test your spontaneous speaking skills and get structured feedback.\n\nWould you like a sample interview question, a resume review checklist, or specific technical tips on Java, Python, DBMS, or DSA?",
+      "timestamp": "2026-11-22T16:59:11.369Z"
     }
   ],
   "interviewSessions": [

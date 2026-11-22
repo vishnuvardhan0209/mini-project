@@ -11,7 +11,7 @@ router.get('/history', (req, res) => {
     res.json({ success: true, messages: history });
 });
 // Send message
-router.post('/message', (req, res) => {
+router.post('/message', async (req, res) => {
     try {
         const { message, conversationId = 'conv-default', userId = req.user?.userId || 'user-alex-kumar' } = req.body;
         if (!message || message.trim().length === 0) {
@@ -27,8 +27,8 @@ router.post('/message', (req, res) => {
             timestamp: new Date().toISOString()
         };
         addChatMessage(userMsg);
-        // AI Career Advisor generates contextual response
-        const aiResponseText = AIService.answerCareerQuestion(message);
+        // AI Career Advisor generates contextual response (via Ollama or fallback)
+        const aiResponseText = await AIService.answerCareerQuestion(message);
         const botMsg = {
             id: `msg-${uuidv4().substring(0, 8)}`,
             userId,
