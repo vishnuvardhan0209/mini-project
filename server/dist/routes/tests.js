@@ -4,13 +4,13 @@ import { AIService } from '../services/aiService.js';
 const router = Router();
 // Get all tests for user
 router.get('/', (req, res) => {
-    const userId = req.query.userId || 'user-alex-kumar';
+    const userId = req.user?.userId || req.query.userId || 'user-alex-kumar';
     const tests = getTests(userId);
     res.json({ success: true, tests });
 });
 // Get aggregated areas to improve
 router.get('/areas-to-improve', (req, res) => {
-    const userId = req.query.userId || 'user-alex-kumar';
+    const userId = req.user?.userId || req.query.userId || 'user-alex-kumar';
     const tests = getTests(userId);
     // Aggregate all topics across tests
     const topicStats = {};
@@ -75,7 +75,7 @@ router.get('/:id', (req, res) => {
 // Submit a test
 router.post('/submit', (req, res) => {
     try {
-        const { title, subject, questions, userAnswers, timeTakenSeconds = 300, userId = 'user-alex-kumar' } = req.body;
+        const { title, subject, questions, userAnswers, timeTakenSeconds = 300, userId = req.user?.userId || 'user-alex-kumar' } = req.body;
         if (!questions || !Array.isArray(questions)) {
             res.status(400).json({ success: false, message: 'Invalid questions payload' });
             return;

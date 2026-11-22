@@ -13,7 +13,7 @@ const router = Router();
 
 // Get sessions
 router.get('/sessions', (req: Request, res: Response): void => {
-  const userId = (req.query.userId as string) || 'user-alex-kumar';
+  const userId = (req as any).user?.userId || (req.query.userId as string) || 'user-alex-kumar';
   const sessions = getInterviewSessions(userId);
   res.json({ success: true, sessions });
 });
@@ -36,7 +36,7 @@ router.post('/start', (req: Request, res: Response): void => {
       role = 'Java Developer',
       interviewType = 'Technical',
       difficulty = 'Intermediate',
-      userId = 'user-alex-kumar'
+      userId = (req as any).user?.userId || 'user-alex-kumar'
     } = req.body;
 
     const questions = AIService.getInterviewQuestionsForRole(role, interviewType);

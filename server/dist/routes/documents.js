@@ -24,7 +24,7 @@ const upload = multer({
 const router = Router();
 // Get all documents
 router.get('/', (req, res) => {
-    const userId = req.query.userId || 'user-alex-kumar';
+    const userId = req.user?.userId || req.query.userId || 'user-alex-kumar';
     const docs = getDocuments(userId);
     res.json({ success: true, documents: docs });
 });
@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
 router.post('/upload', upload.single('file'), (req, res) => {
     try {
         const file = req.file;
-        const { title, subject, chapter, topic, userId = 'user-alex-kumar' } = req.body;
+        const { title, subject, chapter, topic, userId = req.user?.userId || 'user-alex-kumar' } = req.body;
         if (!file) {
             res.status(400).json({ success: false, message: 'No file uploaded' });
             return;

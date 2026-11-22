@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { getTests, getLatestResume, getJobMatches, getInterviewSessions } from '../services/dbService.js';
 const router = Router();
 router.get('/', (req, res) => {
-    const userId = req.query.userId || 'user-alex-kumar';
+    const userId = req.user?.userId || req.query.userId || 'user-alex-kumar';
     const filter = req.query.filter || 'all'; // 7d, 30d, 3m, all
     const tests = getTests(userId);
     const latestResume = getLatestResume(userId);

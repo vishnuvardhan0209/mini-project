@@ -4,7 +4,7 @@ import { getTests, getLatestResume, getJobMatches, getInterviewSessions } from '
 const router = Router();
 
 router.get('/', (req: Request, res: Response): void => {
-  const userId = (req.query.userId as string) || 'user-alex-kumar';
+  const userId = (req as any).user?.userId || (req.query.userId as string) || 'user-alex-kumar';
   const filter = (req.query.filter as string) || 'all'; // 7d, 30d, 3m, all
 
   const tests = getTests(userId);

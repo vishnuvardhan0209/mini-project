@@ -8,7 +8,10 @@
     "build:server": "npm --prefix server run build",
     "build:client": "npm --prefix client run build",
     "build": "npm run build:server && npm run build:client",
-    "start": "npm --prefix server run start"
+    "start": "npm --prefix server run start",
+    "test:auth": "npm --prefix server run test:auth",
+    "db:push": "npm --prefix server run db:push",
+    "db:generate": "npm --prefix server run db:generate"
   },
   "keywords": [
     "ai",

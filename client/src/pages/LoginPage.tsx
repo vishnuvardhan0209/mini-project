@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Sparkles, Mail, Lock, User, GraduationCap, Briefcase, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Sparkles,
+  Mail,
+  Lock,
+  User as UserIcon,
+  GraduationCap,
+  Briefcase,
+  ArrowRight,
+  CheckCircle2,
+  AlertCircle,
+  Loader2
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Navbar } from '../components/common/Navbar';
 
@@ -9,9 +20,10 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [mode, setMode] = useState<'login' | 'register' | 'forgot'>('login');
-  const [email, setEmail] = useState('alex.kumar@example.com');
-  const [password, setPassword] = useState('password123');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [fullName, setFullName] = useState('');
   const [college, setCollege] = useState('');
   const [degree, setDegree] = useState('B.Tech in Computer Science');
   const [targetRole, setTargetRole] = useState('Java Backend Developer');
@@ -23,30 +35,84 @@ export const LoginPage: React.FC = () => {
     e.preventDefault();
     setErrorMsg('');
     setSuccessMsg('');
+
+    // Client-side validations
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email.trim())) {
+      setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+
+    if (mode === 'login') {
+      if (!password) {
+        setErrorMsg('Please enter your password.');
+        return;
+      }
+    } else if (mode === 'register') {
+      if (!fullName.trim() || fullName.trim().length < 2) {
+        setErrorMsg('Please enter your full name (minimum 2 characters).');
+        return;
+      }
+      if (!password || password.length < 6) {
+        setErrorMsg('Password must be at least 6 characters long.');
+        return;
+      }
+      if (password !== confirmPassword) {
+        setErrorMsg('Passwords do not match. Please verify your password confirmation.');
+        return;
+      }
+    }
+
     setSubmitting(true);
 
     try {
       if (mode === 'login') {
-        await login(email, password);
-        navigate('/dashboard');
+        await login(email.trim(), password);
+        setSuccessMsg('Signed in successfully! Redirecting...');
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 300);
       } else if (mode === 'register') {
-        await register({ name, email, college, degree, targetRole });
-        navigate('/dashboard');
+        await register({
+          fullName: fullName.trim(),
+          name: fullName.trim(),
+          email: email.trim(),
+          password,
+          confirmPassword,
+          college: college.trim() || 'Engineering College',
+          degree: degree.trim() || 'B.Tech',
+          targetRole: targetRole.trim() || 'Software Engineer'
+        });
+        setSuccessMsg('Account created successfully! Redirecting to your dashboard...');
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 500);
       } else {
         // Forgot password
-        setSuccessMsg('Password reset instructions have been sent to your college email.');
+        setSuccessMsg('If an account exists with this email, password reset instructions have been sent.');
       }
     } catch (err: any) {
-      setErrorMsg(err.message || 'Authentication error occurred.');
+      setErrorMsg(err.message || 'Authentication error occurred. Please try again.');
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleQuickDemo = async () => {
+    setErrorMsg('');
+    setSuccessMsg('');
     setSubmitting(true);
-    await loginDemo();
-    navigate('/dashboard');
+    try {
+      await loginDemo();
+      setSuccessMsg('Signed in with Demo Student account! Redirecting...');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 300);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Demo login failed.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -68,9 +134,9 @@ export const LoginPage: React.FC = () => {
                 {mode === 'forgot' && 'Reset Password'}
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                {mode === 'login' && 'Continue your AI-powered interview preparation'}
-                {mode === 'register' && 'Join thousands of students cracking top engineering jobs'}
-                {mode === 'forgot' && 'Enter your registered email to receive reset link'}
+                {mode === 'login' && 'Continue your AI-powered interview preparation with PostgreSQL'}
+                {mode === 'register' && 'Join students cracking top software engineering placement interviews'}
+                {mode === 'forgot' && 'Enter your registered email to receive a password reset link'}
               </p>
             </div>
 
@@ -79,9 +145,13 @@ export const LoginPage: React.FC = () => {
               type="button"
               onClick={handleQuickDemo}
               disabled={submitting}
-              className="w-full flex items-center justify-center gap-2 p-3 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-600 dark:text-brand-400 border border-brand-500/20 text-xs font-bold transition-all hover:scale-[1.01]"
+              className="w-full flex items-center justify-center gap-2 p-3 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-600 dark:text-brand-400 border border-brand-500/20 text-xs font-bold transition-all hover:scale-[1.01] disabled:opacity-50"
             >
-              <Sparkles className="w-4 h-4 text-brand-500" />
+              {submitting ? (
+                <Loader2 className="w-4 h-4 animate-spin text-brand-500" />
+              ) : (
+                <Sparkles className="w-4 h-4 text-brand-500" />
+              )}
               <span>1-Click Instant Demo Login (Alex Kumar)</span>
             </button>
 
@@ -128,14 +198,16 @@ export const LoginPage: React.FC = () => {
             </div>
 
             {errorMsg && (
-              <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-medium">
-                {errorMsg}
+              <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-medium flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{errorMsg}</span>
               </div>
             )}
 
             {successMsg && (
-              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
-                {successMsg}
+              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-medium flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>{successMsg}</span>
               </div>
             )}
 
@@ -145,16 +217,16 @@ export const LoginPage: React.FC = () => {
                 <>
                   <div>
                     <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                      Full Name
+                      Full Name <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
-                      <User className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                      <UserIcon className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                       <input
                         type="text"
                         required
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                        placeholder="Alex Kumar"
+                        value={fullName}
+                        onChange={e => setFullName(e.target.value)}
+                        placeholder="John Doe"
                         className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
                       />
                     </div>
@@ -168,7 +240,6 @@ export const LoginPage: React.FC = () => {
                       <GraduationCap className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                       <input
                         type="text"
-                        required
                         value={college}
                         onChange={e => setCollege(e.target.value)}
                         placeholder="National Institute of Technology"
@@ -185,7 +256,6 @@ export const LoginPage: React.FC = () => {
                       <Briefcase className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                       <input
                         type="text"
-                        required
                         value={targetRole}
                         onChange={e => setTargetRole(e.target.value)}
                         placeholder="Java Backend Developer"
@@ -198,7 +268,7 @@ export const LoginPage: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Email Address
+                  Email Address <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -217,7 +287,7 @@ export const LoginPage: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
-                      Password
+                      Password <span className="text-rose-500">*</span>
                     </label>
                     {mode === 'login' && (
                       <button
@@ -243,17 +313,45 @@ export const LoginPage: React.FC = () => {
                 </div>
               )}
 
+              {mode === 'register' && (
+                <div>
+                  <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+                    Confirm Password <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                    <input
+                      type="password"
+                      required
+                      value={confirmPassword}
+                      onChange={e => setConfirmPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    />
+                  </div>
+                </div>
+              )}
+
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                <span>
-                  {mode === 'login' && 'Sign In to Dashboard'}
-                  {mode === 'register' && 'Complete Registration'}
-                  {mode === 'forgot' && 'Send Reset Link'}
-                </span>
-                <ArrowRight className="w-4 h-4" />
+                {submitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>
+                      {mode === 'login' && 'Sign In to Dashboard'}
+                      {mode === 'register' && 'Complete Registration'}
+                      {mode === 'forgot' && 'Send Reset Link'}
+                    </span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
             </form>
 
@@ -274,3 +372,4 @@ export const LoginPage: React.FC = () => {
     </div>
   );
 };
+export default LoginPage;

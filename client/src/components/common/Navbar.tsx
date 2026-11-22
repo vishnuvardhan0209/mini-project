@@ -105,12 +105,23 @@ export const Navbar: React.FC = () => {
                 className="flex items-center gap-2 pl-2 pr-3 py-1 rounded-full border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-brand-500/40 transition-colors"
               >
                 <div className="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs font-bold">
-                  {user.name.charAt(0)}
+                  {(user.fullName || user.name || 'U').charAt(0).toUpperCase()}
                 </div>
                 <span className="hidden sm:inline text-xs font-semibold text-slate-800 dark:text-slate-200 max-w-[90px] truncate">
-                  {user.name.split(' ')[0]}
+                  {(user.fullName || user.name).split(' ')[0]}
                 </span>
               </Link>
+
+              <button
+                onClick={() => {
+                  logout();
+                  navigate('/login');
+                }}
+                title="Sign Out"
+                className="hidden sm:flex items-center p-1.5 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
             </div>
           ) : (
             <div className="hidden sm:flex items-center gap-2">

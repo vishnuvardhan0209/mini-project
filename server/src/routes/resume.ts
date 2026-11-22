@@ -19,14 +19,14 @@ const router = Router();
 
 // Get latest resume analysis
 router.get('/latest', (req: Request, res: Response): void => {
-  const userId = (req.query.userId as string) || 'user-alex-kumar';
+  const userId = (req as any).user?.userId || (req.query.userId as string) || 'user-alex-kumar';
   const latest = getLatestResume(userId);
   res.json({ success: true, resume: latest || null });
 });
 
 // Get all resume analyses
 router.get('/', (req: Request, res: Response): void => {
-  const userId = (req.query.userId as string) || 'user-alex-kumar';
+  const userId = (req as any).user?.userId || (req.query.userId as string) || 'user-alex-kumar';
   const list = getResumeAnalyses(userId);
   res.json({ success: true, resumes: list });
 });
@@ -35,7 +35,7 @@ router.get('/', (req: Request, res: Response): void => {
 router.post('/upload', upload.single('resume'), (req: Request, res: Response): void => {
   try {
     const file = req.file;
-    const userId = req.body.userId || 'user-alex-kumar';
+    const userId = (req as any).user?.userId || req.body.userId || 'user-alex-kumar';
 
     if (!file) {
       res.status(400).json({ success: false, message: 'No resume file uploaded' });
@@ -56,7 +56,11 @@ router.post('/upload', upload.single('resume'), (req: Request, res: Response): v
 // Analyze direct resume text (or sample resume)
 router.post('/analyze-text', (req: Request, res: Response): void => {
   try {
-    const { resumeText, resumeName = 'Alex_Kumar_Resume.pdf', userId = 'user-alex-kumar' } = req.body;
+    const {
+      resumeText,
+      resumeName = 'Alex_Kumar_Resume.pdf',
+      userId = (req as any).user?.userId || 'user-alex-kumar'
+    } = req.body;
 
     if (!resumeText || resumeText.trim().length === 0) {
       res.status(400).json({ success: false, message: 'Resume text is required' });

@@ -30,7 +30,7 @@ const router = Router();
 
 // Get all documents
 router.get('/', (req: Request, res: Response): void => {
-  const userId = (req.query.userId as string) || 'user-alex-kumar';
+  const userId = (req as any).user?.userId || (req.query.userId as string) || 'user-alex-kumar';
   const docs = getDocuments(userId);
   res.json({ success: true, documents: docs });
 });
@@ -39,7 +39,7 @@ router.get('/', (req: Request, res: Response): void => {
 router.post('/upload', upload.single('file'), (req: Request, res: Response): void => {
   try {
     const file = req.file;
-    const { title, subject, chapter, topic, userId = 'user-alex-kumar' } = req.body;
+    const { title, subject, chapter, topic, userId = (req as any).user?.userId || 'user-alex-kumar' } = req.body;
 
     if (!file) {
       res.status(400).json({ success: false, message: 'No file uploaded' });

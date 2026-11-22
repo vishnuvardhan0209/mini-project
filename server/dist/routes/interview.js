@@ -5,7 +5,7 @@ import { AIService } from '../services/aiService.js';
 const router = Router();
 // Get sessions
 router.get('/sessions', (req, res) => {
-    const userId = req.query.userId || 'user-alex-kumar';
+    const userId = req.user?.userId || req.query.userId || 'user-alex-kumar';
     const sessions = getInterviewSessions(userId);
     res.json({ success: true, sessions });
 });
@@ -22,7 +22,7 @@ router.get('/sessions/:id', (req, res) => {
 // Start new interview session
 router.post('/start', (req, res) => {
     try {
-        const { role = 'Java Developer', interviewType = 'Technical', difficulty = 'Intermediate', userId = 'user-alex-kumar' } = req.body;
+        const { role = 'Java Developer', interviewType = 'Technical', difficulty = 'Intermediate', userId = req.user?.userId || 'user-alex-kumar' } = req.body;
         const questions = AIService.getInterviewQuestionsForRole(role, interviewType);
         const initialTurn = {
             id: `turn-1`,

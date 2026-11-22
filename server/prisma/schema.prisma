@@ -1,0 +1,142 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  fullName     String
+  email        String   @unique
+  passwordHash String
+  college      String?  @default("")
+  degree       String?  @default("")
+  targetRole   String?  @default("")
+  skills       String[] @default([])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relationships for future and existing features
+  interviews     InterviewSession[]
+  testResults    TestResult[]
+  resumeAnalyses ResumeAnalysis[]
+  chatMessages   ChatMessage[]
+  documents      DocumentItem[]
+  jobMatches     JobMatch[]
+
+  @@map("users")
+}
+
+model InterviewSession {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role          String
+  interviewType String
+  difficulty    String
+  status        String   @default("in-progress")
+  turns         Json     @default("[]")
+  evaluation    Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@map("interview_sessions")
+}
+
+model TestResult {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title          String
+  subject        String
+  score          Float
+  totalQuestions Int
+  correctAnswers Int
+  wrongAnswers   Int
+  unanswered     Int
+  timeTaken      String
+  accuracy       Float
+  topicBreakdown Json?
+  answers        Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+  @@map("test_results")
+}
+
+model ResumeAnalysis {
+  id                 String   @id @default(uuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resumeName         String
+  overallScore       Float
+  scores             Json?
+  strengths          String[] @default([])
+  areasToImprove     String[] @default([])
+  sectionSuggestions Json?
+  extractedSkills    String[] @default([])
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([userId])
+  @@map("resume_analyses")
+}
+
+model ChatMessage {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversationId String   @default("conv-default")
+  role           String
+  content        String
+  timestamp      DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+  @@map("chat_messages")
+}
+
+model DocumentItem {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title      String
+  subject    String
+  chapter    String?
+  topic      String?
+  content    String
+  fileUrl    String?
+  fileType   String
+  uploadedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+  @@map("documents")
+}
+
+model JobMatch {
+  id                     String   @id @default(uuid())
+  userId                 String
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobTitle               String
+  company                String
+  jobDescription         String
+  matchScore             Float
+  keywordMatchPercentage Float
+  matchedSkills          String[] @default([])
+  missingSkills          String[] @default([])
+  recommendations        String?
+  resumeChanges          String[] @default([])
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@index([userId])
+  @@map("job_matches")
+}

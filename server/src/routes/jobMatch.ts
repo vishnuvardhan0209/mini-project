@@ -6,7 +6,7 @@ const router = Router();
 
 // Get job match history
 router.get('/', (req: Request, res: Response): void => {
-  const userId = (req.query.userId as string) || 'user-alex-kumar';
+  const userId = (req as any).user?.userId || (req.query.userId as string) || 'user-alex-kumar';
   const matches = getJobMatches(userId);
   res.json({ success: true, jobMatches: matches });
 });
@@ -30,7 +30,7 @@ router.post('/analyze', (req: Request, res: Response): void => {
       company = 'Target Tech Company',
       jobDescription,
       resumeText,
-      userId = 'user-alex-kumar'
+      userId = (req as any).user?.userId || 'user-alex-kumar'
     } = req.body;
 
     if (!jobTitle || !jobDescription) {
