@@ -2,14 +2,22 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
-  const headers = {
-    'Content-Type': 'application/json',
-    ...(options.headers || {})
+  const token = localStorage.getItem('agy_token');
+
+  const headers: Record<string, string> = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...((options.headers as Record<string, string>) || {})
   };
+
+  if (!(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+  }
 
   const response = await fetch(url, {
     ...options,
-    headers: options.body instanceof FormData ? undefined : headers
+    headers: options.body instanceof FormData
+      ? (token ? { Authorization: `Bearer ${token}` } : undefined)
+      : headers
   });
 
   if (!response.ok) {
@@ -23,16 +31,17 @@ async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise
 export const api = {
   // Auth
   login: (email?: string, password?: string) =>
-    fetchApi<any>('/auth/login', {
+    fetchApi<{ success: boolean; message?: string; token: string; user: any }>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password })
     }),
   register: (data: any) =>
-    fetchApi<any>('/auth/register', {
+    fetchApi<{ success: boolean; message?: string; token: string; user: any }>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data)
     }),
-  getMe: () => fetchApi<any>('/auth/me'),
+  getMe: () => fetchApi<{ success: boolean; user: any }>('/auth/me'),
+  logout: () => fetchApi<{ success: boolean; message: string }>('/auth/logout', { method: 'POST' }),
 
   // Documents
   getDocuments: (userId?: string) =>

@@ -6,26 +6,14 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email?: string, password?: string) => Promise<void>;
-  loginDemo: () => Promise<void>;
-  register: (data: any) => Promise<void>;
+  login: (email?: string, password?: string) => Promise<any>;
+  loginDemo: () => Promise<any>;
+  register: (data: any) => Promise<any>;
   logout: () => void;
   updateUserProfile: (updates: Partial<User>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Default Alex Kumar fallback state so app is pre-authenticated for seamless demo
-const DEFAULT_DEMO_USER: User = {
-  id: 'user-alex-kumar',
-  name: 'Alex Kumar',
-  email: 'alex.kumar@example.com',
-  college: 'National Institute of Technology',
-  degree: 'B.Tech in Computer Science & Engineering',
-  targetRole: 'Java Backend Developer',
-  skills: ['Java', 'Spring Boot', 'SQL', 'Git', 'DSA', 'REST APIs', 'PostgreSQL', 'Docker (Basics)'],
-  createdAt: '2026-08-15T10:00:00.000Z'
-};
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
@@ -34,79 +22,103 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         return JSON.parse(saved);
       } catch {
-        return DEFAULT_DEMO_USER;
+        return null;
       }
     }
-    return DEFAULT_DEMO_USER;
+    return null;
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Initialize and verify session on load / refresh
   useEffect(() => {
-    if (user) {
-      localStorage.setItem('agy_user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('agy_user');
+    async function verifySession() {
+      const token = localStorage.getItem('agy_token');
+      if (!token) {
+        setUser(null);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const res = await api.getMe();
+        if (res.success && res.user) {
+          setUser(res.user);
+          localStorage.setItem('agy_user', JSON.stringify(res.user));
+        } else {
+          localStorage.removeItem('agy_token');
+          localStorage.removeItem('agy_user');
+          setUser(null);
+        }
+      } catch (err) {
+        console.warn('Session verification error, resetting session:', err);
+        localStorage.removeItem('agy_token');
+        localStorage.removeItem('agy_user');
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }, [user]);
+
+    verifySession();
+  }, []);
 
   const login = async (email?: string, password?: string) => {
     setIsLoading(true);
     try {
       const res = await api.login(email, password);
+      if (res.token) {
+        localStorage.setItem('agy_token', res.token);
+      }
       if (res.user) {
         setUser(res.user);
+        localStorage.setItem('agy_user', JSON.stringify(res.user));
       }
-    } catch (err) {
-      console.warn('Backend offline or error, falling back to demo user:', err);
-      setUser(DEFAULT_DEMO_USER);
+      return res;
     } finally {
       setIsLoading(false);
     }
   };
 
   const loginDemo = async () => {
-    await login('alex.kumar@example.com', 'password123');
+    return await login('alex.kumar@example.com', 'password123');
   };
 
   const register = async (data: any) => {
     setIsLoading(true);
     try {
       const res = await api.register(data);
+      if (res.token) {
+        localStorage.setItem('agy_token', res.token);
+      }
       if (res.user) {
         setUser(res.user);
+        localStorage.setItem('agy_user', JSON.stringify(res.user));
       }
-    } catch (err) {
-      console.warn('Using client-side registration fallback:', err);
-      const newUser: User = {
-        id: `user-${Date.now()}`,
-        name: data.name || 'Alex Kumar',
-        email: data.email || 'alex.kumar@example.com',
-        college: data.college || 'Engineering Institute',
-        degree: data.degree || 'B.Tech CS',
-        targetRole: data.targetRole || 'Software Engineer',
-        skills: ['Java', 'SQL', 'Git'],
-        createdAt: new Date().toISOString()
-      };
-      setUser(newUser);
+      return res;
     } finally {
       setIsLoading(false);
     }
   };
 
   const logout = () => {
-    setUser(null);
+    api.logout().catch(() => {});
+    localStorage.removeItem('agy_token');
     localStorage.removeItem('agy_user');
+    setUser(null);
   };
 
   const updateUserProfile = async (updates: Partial<User>) => {
     if (!user) return;
-    const updated = { ...user, ...updates };
-    setUser(updated);
     try {
-      await api.updateProfile(updated);
+      const res = await api.updateProfile(updates);
+      if (res.user) {
+        setUser(res.user);
+        localStorage.setItem('agy_user', JSON.stringify(res.user));
+      }
     } catch (err) {
-      console.warn('Profile update locally persisted:', err);
+      console.error('Profile update failed:', err);
+      throw err;
     }
   };
 

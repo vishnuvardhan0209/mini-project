@@ -8,7 +8,7 @@ const router = Router();
 
 // Get chat history
 router.get('/history', (req: Request, res: Response): void => {
-  const userId = (req.query.userId as string) || 'user-alex-kumar';
+  const userId = (req as any).user?.userId || (req.query.userId as string) || 'user-alex-kumar';
   const conversationId = (req.query.conversationId as string) || 'conv-default';
   const history = getChatMessages(userId, conversationId);
   res.json({ success: true, messages: history });
@@ -20,7 +20,7 @@ router.post('/message', (req: Request, res: Response): void => {
     const {
       message,
       conversationId = 'conv-default',
-      userId = 'user-alex-kumar'
+      userId = (req as any).user?.userId || 'user-alex-kumar'
     } = req.body;
 
     if (!message || message.trim().length === 0) {

@@ -8,14 +8,14 @@ const router = Router();
 
 // Get all tests for user
 router.get('/', (req: Request, res: Response): void => {
-  const userId = (req.query.userId as string) || 'user-alex-kumar';
+  const userId = (req as any).user?.userId || (req.query.userId as string) || 'user-alex-kumar';
   const tests = getTests(userId);
   res.json({ success: true, tests });
 });
 
 // Get aggregated areas to improve
 router.get('/areas-to-improve', (req: Request, res: Response): void => {
-  const userId = (req.query.userId as string) || 'user-alex-kumar';
+  const userId = (req as any).user?.userId || (req.query.userId as string) || 'user-alex-kumar';
   const tests = getTests(userId);
 
   // Aggregate all topics across tests
@@ -92,7 +92,7 @@ router.post('/submit', (req: Request, res: Response): void => {
       questions,
       userAnswers,
       timeTakenSeconds = 300,
-      userId = 'user-alex-kumar'
+      userId = (req as any).user?.userId || 'user-alex-kumar'
     } = req.body;
 
     if (!questions || !Array.isArray(questions)) {

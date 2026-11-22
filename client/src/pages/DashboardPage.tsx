@@ -83,7 +83,8 @@ export const DashboardPage: React.FC = () => {
     loadDashboardData();
   }, []);
 
-  const userName = user?.name || 'Alex Kumar';
+  const userName = user?.fullName || user?.name || 'Student';
+  const userEmail = user?.email || '';
 
   return (
     <DashboardLayout>
@@ -92,15 +93,22 @@ export const DashboardPage: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-brand-900/40 via-indigo-900/20 to-slate-900 border border-brand-500/20 shadow-sm relative overflow-hidden">
           <div className="absolute right-0 top-0 w-96 h-96 bg-brand-500/10 blur-3xl pointer-events-none rounded-full" />
           <div className="relative z-10 space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-brand-400 animate-pulse" />
-              <span>Target Role: {user?.targetRole || 'Java Backend Developer'}</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 text-xs font-semibold">
+                <Sparkles className="w-3.5 h-3.5 text-brand-400 animate-pulse" />
+                <span>Target Role: {user?.targetRole || 'Software Engineer'}</span>
+              </div>
+              {userEmail && (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/80 text-slate-300 text-xs border border-slate-700/60 font-mono">
+                  <span>{userEmail}</span>
+                </div>
+              )}
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
               Welcome back, {userName} 👋
             </h1>
             <p className="text-sm text-slate-300 font-normal">
-              Continue your interview preparation. You are on track to achieve an 85%+ readiness benchmark.
+              {user?.college ? `${user.college} • ` : ''}Continue your interview preparation with your personalized AI dashboard.
             </p>
           </div>
 

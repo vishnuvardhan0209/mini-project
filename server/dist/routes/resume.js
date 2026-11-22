@@ -15,13 +15,13 @@ const upload = multer({
 const router = Router();
 // Get latest resume analysis
 router.get('/latest', (req, res) => {
-    const userId = req.query.userId || 'user-alex-kumar';
+    const userId = req.user?.userId || req.query.userId || 'user-alex-kumar';
     const latest = getLatestResume(userId);
     res.json({ success: true, resume: latest || null });
 });
 // Get all resume analyses
 router.get('/', (req, res) => {
-    const userId = req.query.userId || 'user-alex-kumar';
+    const userId = req.user?.userId || req.query.userId || 'user-alex-kumar';
     const list = getResumeAnalyses(userId);
     res.json({ success: true, resumes: list });
 });
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 router.post('/upload', upload.single('resume'), (req, res) => {
     try {
         const file = req.file;
-        const userId = req.body.userId || 'user-alex-kumar';
+        const userId = req.user?.userId || req.body.userId || 'user-alex-kumar';
         if (!file) {
             res.status(400).json({ success: false, message: 'No resume file uploaded' });
             return;
@@ -47,7 +47,7 @@ router.post('/upload', upload.single('resume'), (req, res) => {
 // Analyze direct resume text (or sample resume)
 router.post('/analyze-text', (req, res) => {
     try {
-        const { resumeText, resumeName = 'Alex_Kumar_Resume.pdf', userId = 'user-alex-kumar' } = req.body;
+        const { resumeText, resumeName = 'Alex_Kumar_Resume.pdf', userId = req.user?.userId || 'user-alex-kumar' } = req.body;
         if (!resumeText || resumeText.trim().length === 0) {
             res.status(400).json({ success: false, message: 'Resume text is required' });
             return;

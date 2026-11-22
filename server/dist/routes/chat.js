@@ -5,7 +5,7 @@ import { AIService } from '../services/aiService.js';
 const router = Router();
 // Get chat history
 router.get('/history', (req, res) => {
-    const userId = req.query.userId || 'user-alex-kumar';
+    const userId = req.user?.userId || req.query.userId || 'user-alex-kumar';
     const conversationId = req.query.conversationId || 'conv-default';
     const history = getChatMessages(userId, conversationId);
     res.json({ success: true, messages: history });
@@ -13,7 +13,7 @@ router.get('/history', (req, res) => {
 // Send message
 router.post('/message', (req, res) => {
     try {
-        const { message, conversationId = 'conv-default', userId = 'user-alex-kumar' } = req.body;
+        const { message, conversationId = 'conv-default', userId = req.user?.userId || 'user-alex-kumar' } = req.body;
         if (!message || message.trim().length === 0) {
             res.status(400).json({ success: false, message: 'Message cannot be empty' });
             return;

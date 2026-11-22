@@ -15,6 +15,8 @@ import chatRouter from './routes/chat.js';
 import interviewRouter from './routes/interview.js';
 import analyticsRouter from './routes/analytics.js';
 import profileRouter from './routes/profile.js';
+import { seedInitialData } from './lib/seed.js';
+import { optionalAuth } from './middleware/auth.js';
 
 dotenv.config();
 
@@ -38,6 +40,9 @@ app.use(cors({
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 app.use('/uploads', express.static(uploadsDir));
+
+// Parse optional JWT auth for all requests
+app.use(optionalAuth);
 
 // API Routes
 app.use('/api/auth', authRouter);
@@ -70,8 +75,13 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 AI Interview Simulator Server running on http://localhost:${PORT}`);
+  try {
+    await seedInitialData();
+  } catch (err) {
+    console.error('Failed to initialize seed data:', err);
+  }
 });
 
 export default app;

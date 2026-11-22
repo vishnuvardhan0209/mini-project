@@ -1,5 +1,6 @@
 export interface User {
   id: string;
+  fullName?: string;
   name: string;
   email: string;
   college: string;
@@ -7,6 +8,7 @@ export interface User {
   targetRole: string;
   skills: string[];
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface DocumentItem {
@@ -75,6 +77,13 @@ export interface TestResult {
   createdAt: string;
 }
 
+export interface CategoryScore {
+  name: string;
+  score: number;
+  maxScore: number;
+  feedback: string;
+}
+
 export interface ResumeSectionSuggestion {
   section: string;
   currentFeedback: string;
@@ -109,7 +118,7 @@ export interface JobMatch {
   jobTitle: string;
   company: string;
   jobDescription: string;
-  matchScore: number;
+  matchScore: number; // out of 10
   keywordMatchPercentage: number;
   matchedSkills: string[];
   missingSkills: string[];

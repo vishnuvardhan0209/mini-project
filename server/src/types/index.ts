@@ -1,13 +1,16 @@
 export interface User {
   id: string;
+  fullName?: string;
   name: string;
   email: string;
   password?: string;
-  college: string;
-  degree: string;
-  targetRole: string;
+  passwordHash?: string;
+  college?: string;
+  degree?: string;
+  targetRole?: string;
   skills: string[];
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface DocumentItem {

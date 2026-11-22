@@ -21,7 +21,7 @@ export const ProfilePage: React.FC = () => {
   const { user, updateUserProfile } = useAuth();
 
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [name, setName] = useState(user?.name || 'Alex Kumar');
+  const [name, setName] = useState(user?.fullName || user?.name || 'Alex Kumar');
   const [email, setEmail] = useState(user?.email || 'alex.kumar@example.com');
   const [college, setCollege] = useState(user?.college || 'National Institute of Technology');
   const [degree, setDegree] = useState(user?.degree || 'B.Tech in Computer Science & Engineering');
@@ -30,6 +30,19 @@ export const ProfilePage: React.FC = () => {
     user?.skills?.join(', ') || 'Java, Spring Boot, SQL, Git, DSA, REST APIs, PostgreSQL, Docker (Basics)'
   );
   const [saving, setSaving] = useState(false);
+
+  React.useEffect(() => {
+    if (user) {
+      setName(user.fullName || user.name || '');
+      setEmail(user.email || '');
+      setCollege(user.college || '');
+      setDegree(user.degree || '');
+      setTargetRole(user.targetRole || '');
+      if (user.skills && user.skills.length > 0) {
+        setSkillsStr(user.skills.join(', '));
+      }
+    }
+  }, [user]);
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,6 +55,7 @@ export const ProfilePage: React.FC = () => {
 
       await updateUserProfile({
         name,
+        fullName: name,
         college,
         degree,
         targetRole,
@@ -83,12 +97,12 @@ export const ProfilePage: React.FC = () => {
         <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
             <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-brand-600 to-ai-cyan text-white flex items-center justify-center text-3xl font-black shadow-glow-sm shrink-0">
-              {user?.name?.charAt(0) || 'A'}
+              {(user?.fullName || user?.name || 'A').charAt(0).toUpperCase()}
             </div>
 
             <div className="space-y-1">
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
-                {user?.name || 'Alex Kumar'}
+                {user?.fullName || user?.name || 'Alex Kumar'}
               </h2>
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
                 <span className="flex items-center gap-1.5">

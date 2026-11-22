@@ -4,7 +4,7 @@ import { AIService } from '../services/aiService.js';
 const router = Router();
 // Get job match history
 router.get('/', (req, res) => {
-    const userId = req.query.userId || 'user-alex-kumar';
+    const userId = req.user?.userId || req.query.userId || 'user-alex-kumar';
     const matches = getJobMatches(userId);
     res.json({ success: true, jobMatches: matches });
 });
@@ -21,7 +21,7 @@ router.get('/:id', (req, res) => {
 // Analyze Job Match
 router.post('/analyze', (req, res) => {
     try {
-        const { jobTitle, company = 'Target Tech Company', jobDescription, resumeText, userId = 'user-alex-kumar' } = req.body;
+        const { jobTitle, company = 'Target Tech Company', jobDescription, resumeText, userId = req.user?.userId || 'user-alex-kumar' } = req.body;
         if (!jobTitle || !jobDescription) {
             res.status(400).json({ success: false, message: 'Job title and job description are required' });
             return;
